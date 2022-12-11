@@ -1,0 +1,20 @@
+{
+  "name": "weather-stack-client",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "apiClientGen": "node apiClientGenerator swaggerSpecs='./swagger/weather-stack-api.yaml' outputFile='./client/WeatherStackApiClient.js'",
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "js-yaml": "^3.13.1",
+    "log4js": "^6.7.1",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.6",
+    "swagger-js-codegen": "^1.12.0"
+  }
+}

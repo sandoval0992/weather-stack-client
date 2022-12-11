@@ -1,0 +1,222 @@
+swagger: '2.0'
+info:
+  title: Weather Stack API
+  description: The weatherstack API was built to deliver accurate weather data for any application and use case, from real-time and historical weather information all the way to 14-day weather forecasts, supporting all major programming languages.
+  termsOfService: TODO
+  contact:
+    name: Weather Stack Support
+    url: https://weatherstack.com/contact
+  version: 1.0.0
+host: api.weatherstack.com
+basePath: '/'
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+parameters:
+  access_key:
+    name: access_key
+    in: query
+    description: Your API access key, which can be found in your acccount dashboard.
+    type: string
+    required: true
+  query:
+    name: query
+    in: query
+    description: Use this parameter to pass a single location or multiple semicolon-separated location identifiers to the API.
+    type: string
+    required: true
+  units:
+    name: units
+    in: query
+    description: >
+      Use this parameter to pass one of the unit identifiers ot the API
+        -m for Metric
+        -s for Scientific
+        -f for Fahrenheit
+    type: string
+    required: false
+    enum:
+      - m
+      - s
+      - f
+  language:
+    name: language
+    in: query
+    description: >
+      Use this parameter to specify your preferred API response language using its ISO-code. (Default: unset, English)
+    type: string
+    required: false
+paths:
+  '/current':
+    get:
+      description: To query the weatherstack API for real-time weather data in a location of your choice, simply attach your preferred location to the API's current endpoint
+      operationId: currentWeather
+      parameters:
+        - $ref: '#/parameters/access_key'
+        - $ref: '#/parameters/query'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            properties:
+              currentWeatherResponse:
+                $ref: '#/definitions/currentWeatherResponse'
+      tags: ['Current Weather']
+definitions:
+  currentWeatherResponse:
+    type: object
+    properties:
+      request:
+        type: object
+        properties:
+          type:
+            description: >
+              Returns the type of location lookup used for this request. Possible values: 
+                -City
+                -LatLon
+                -IP
+                -Zipcode
+            type: string
+            example: City
+            enum:
+              - City
+              - LatLon
+              - IP
+              - Zipcode
+          query:
+            description: Returns the exact location identifier query used for this request.
+            type: string
+            example: New York, United States of America
+          language:
+            description: Returns the ISO-Code of the language used for this request.
+            type: string
+            example: en
+          unit:
+            description: >
+              Use this parameter to pass one of the unit identifiers ot the API
+                -m for Metric
+                -s for Scientific
+                -f for Fahrenheit
+            type: string
+            example: m
+            enum:
+              - m
+              - s
+              - f
+      location:
+        type: object
+        properties:
+          name:
+            description: Returns the name of the location used for this request.
+            type: string
+            example: New York
+          country:
+            description: Returns the country name associated with the location used for this request.
+            type: string
+            example: United States of America
+          region:
+            description: Returns the region name associated with the location used for this request.
+            type: string
+            example: New York
+          lat:
+            description: Returns the latitude coordinate associated with the location used for this request.
+            type: number
+            example: 40.714
+          lon:
+            description: Returns the longitude coordinate associated with the location used for this request.
+            type: number
+            example: -74.006
+          timezone_id:
+            description: Returns the local time (as UNIX timestamp) of the location used for this request.
+            type: string
+            example: America/New_York
+          localtime:
+            description: Returns the local time of the location used for this request.
+            type: string
+            example: 2019-09-07 08
+          localtime_epoch:
+            description: Returns the local time (as UNIX timestamp) of the location used for this request.
+            type: number
+            example: 1567844040
+          utc_offset:
+            description: Returns the UTC offset (in hours) of the timezone associated with the location used
+            type: string
+            example: -4.0
+      current:
+        type: object
+        properties:
+          observation_time:
+            description: Returns the UTC time for when the returned whether data was collected.
+            type: string
+            example: 12:14 PM
+          temperature:
+            description: Returns the temperature in the selected unit.
+            type: number
+            example: 13
+            default: Celsius
+          weather_code:
+            description: Returns the universal weather condition code associated with the current weather condition.
+            type: number
+            example: 113
+          weather_icons:
+            description: Returns one or more PNG weather icons associated with the current weather condition.
+            type: array
+            items:
+              type: string
+            example: https://assets.weatherstack.com/images/wsymbols01_png_64/wsymbol_0001_sunny.png
+          weather_descriptions:
+            description: Returns one or more PNG weather icons associated with the current weather condition.
+            type: array
+            items:
+              type: string
+            example: Sunny
+          wind_speed:
+            description: Returns the wind speed in the selected unit.
+            type: number
+            example: 0
+            default: kilometers/hour
+          wind_degree:
+            description: Returns the wind degree.
+            type: number
+            example: 349
+          wind_dir:
+            description: Returns the wind direction.
+            type: string
+            example: N
+          pressure:
+            description: Returns the air pressure in the selected unit.
+            type: number
+            example: 1010
+            default: MB - millibar
+          precip:
+            description: Returns the precipitation level in the selected unit.
+            type: number
+            example: 0
+            default: MM - millimeters
+          humidity:
+            description: Returns the air humidity level in percentage.
+            type: number
+            example: 90
+          cloudcover:
+            description: Returns the cloud cover level in percentage.
+            type: number
+            example: 0
+          feelslike:
+            description: Returns the "Feels Like" temperature in the selected unit.
+            type: number
+            example: 13
+            default: Celsius
+          uv_index:
+            description: Returns the UV index associated with the current weather condition.
+            type: number
+            example: 4
+          visibility:
+            description: Returns the visibility level in the selected unit.
+            type: number
+            example: 16
+            default: kilometers
+tags: [{ name: 'Current Weather' }]
